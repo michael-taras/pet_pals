@@ -1,1 +1,1 @@
-# pet_pals
+# pet_pals_demo

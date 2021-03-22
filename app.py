@@ -18,12 +18,15 @@ app = Flask(__name__)
 #################################################
 
 from flask_sqlalchemy import SQLAlchemy
+
+# Added logic to handle newer version of sql alchemy
 # Based on https://help.heroku.com/ZKNTJQSK/why-is-sqlalchemy-1-4-x-not-connecting-to-heroku-postgres
 uri = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"
+
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 # Remove tracking modifications
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -58,6 +61,7 @@ def send():
 def pals():
     results = db.session.query(Pet.name, Pet.lat, Pet.lon).all()
 
+    print (results)
     hover_text = [result[0] for result in results]
     lat = [result[1] for result in results]
     lon = [result[2] for result in results]
@@ -78,6 +82,7 @@ def pals():
         }
     }]
 
+    print(pet_data)
     return jsonify(pet_data)
 
 
